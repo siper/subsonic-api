@@ -1,0 +1,37 @@
+package ru.stersh.subsonic.api.model
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ArtistsResponse(
+    val artists: Artists
+)
+
+@Serializable
+data class Artists(
+    val ignoredArticles: String,
+    val indices: List<Index>,
+) {
+
+    @Serializable
+    data class Index(
+        val name: String,
+        val artists: List<Artist>,
+    )
+}
+
+@Serializable
+data class ArtistResponse(
+    val artist: Artist
+)
+
+@Serializable
+data class Artist(
+    val id: String,
+    val name: String,
+    val coverArt: String?,
+    val albumCount: Int?,
+    val artistImageUrl: String?,
+    val albums: List<Album>?,
+    val userRating: Int?
+)
