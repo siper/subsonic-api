@@ -312,6 +312,25 @@ class SubsonicApi(
         auth: Boolean = false
     ): Url = buildUrl("getAvatar", mapOf("username" to username), auth)
 
+    fun getClientParams(): Map<String, String> {
+        val authMap = if (useLegacyAuth) {
+            mapOf("p" to this@SubsonicApi.password)
+        } else {
+            val salt = Security.generateSalt()
+            val token = Security.getToken(salt, this@SubsonicApi.password)
+            mapOf(
+                "s" to salt,
+                "t" to token
+            )
+        }
+        return mapOf(
+            "u" to username,
+            "c" to clientId,
+            "v" to apiVersion,
+            "f" to "json"
+        ) + authMap
+    }
+
     private fun buildUrl(
         path: String,
         queryMap: Map<String, Any?>,
@@ -335,18 +354,8 @@ class SubsonicApi(
     }
 
     private fun URLBuilder.appendAuth() {
-        parameters.append("u", username)
-        parameters.append("c", clientId)
-        parameters.append("v", apiVersion)
-        parameters.append("f", "json")
-
-        if (useLegacyAuth) {
-            parameters.append("p", this@SubsonicApi.password)
-        } else {
-            val salt = Security.generateSalt()
-            val token = Security.getToken(salt, this@SubsonicApi.password)
-            parameters.append("s", salt)
-            parameters.append("t", token)
+        getClientParams().forEach {
+            parameters.append(it.key, it.value)
         }
     }
 }
