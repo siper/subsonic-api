@@ -32,6 +32,6 @@ data class Artist(
     val coverArt: String?,
     val albumCount: Int?,
     val artistImageUrl: String?,
-    val albums: List<Album>?,
+    val album: List<Album>?,
     val userRating: Int?
 )
