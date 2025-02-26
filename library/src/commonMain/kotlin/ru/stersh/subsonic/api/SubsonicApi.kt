@@ -304,14 +304,14 @@ class SubsonicApi(
         return id?.let { buildUrl("getCoverArt", mapOf("id" to it, "size" to size), auth).toString() }
     }
 
-    fun downloadUrl(id: String): Url = buildUrl("download", mapOf("id" to id))
+    fun downloadUrl(id: String): String = buildUrl("download", mapOf("id" to id)).toString()
 
-    fun streamUrl(id: String): Url = buildUrl("stream", mapOf("id" to id))
+    fun streamUrl(id: String): String = buildUrl("stream", mapOf("id" to id)).toString()
 
     fun avatarUrl(
         username: String,
         auth: Boolean = false
-    ): Url = buildUrl("getAvatar", mapOf("username" to username), auth)
+    ): String = buildUrl("getAvatar", mapOf("username" to username), auth).toString()
 
     fun getClientParams(): Map<String, String> {
         val authMap = if (useLegacyAuth) {
