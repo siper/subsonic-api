@@ -16,7 +16,7 @@ data class Artists(
     @Serializable
     data class Index(
         val name: String,
-        val artists: List<Artist>,
+        val artist: List<Artist>,
     )
 }
 
