@@ -10,7 +10,7 @@ data class ArtistsResponse(
 @Serializable
 data class Artists(
     val ignoredArticles: String,
-    val indices: List<Index>,
+    val index: List<Index>,
 ) {
 
     @Serializable
