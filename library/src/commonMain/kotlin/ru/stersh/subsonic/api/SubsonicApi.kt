@@ -44,6 +44,7 @@ class SubsonicApi(
         install(ContentNegotiation) {
             json(
                 json = Json {
+                    isLenient = true
                     explicitNulls = false
                     ignoreUnknownKeys = true
                 }
@@ -94,11 +95,11 @@ class SubsonicApi(
     }
 
     suspend fun getRandomSongs(
-        size: Int?,
-        genre: String?,
-        fromYear: Int?,
-        toYear: Int?,
-        musicFolderId: String?
+        size: Int? = null,
+        genre: String? = null,
+        fromYear: Int? = null,
+        toYear: Int? = null,
+        musicFolderId: String? = null
     ): SubsonicResponse<RandomSongsResponse> {
         return client
             .get("rest/getRandomSongs") {
@@ -136,7 +137,7 @@ class SubsonicApi(
     ): SubsonicResponse<AlbumListResponse> {
         return client
             .get("rest/getAlbumList") {
-                parameter("type", type)
+                parameter("type", type.value)
                 parameter("size", size)
                 parameter("offset", offset)
                 parameter("fromYear", fromYear)
@@ -158,7 +159,7 @@ class SubsonicApi(
     ): SubsonicResponse<AlbumList2Response> {
         return client
             .get("rest/getAlbumList2") {
-                parameter("type", type)
+                parameter("type", type.value)
                 parameter("size", size)
                 parameter("offset", offset)
                 parameter("fromYear", fromYear)
@@ -296,11 +297,11 @@ class SubsonicApi(
     }
 
     fun getCoverArtUrl(
-        id: String,
+        id: String?,
         size: Int? = null,
         auth: Boolean = false
-    ): Url {
-        return buildUrl("getCoverArt", mapOf("id" to id, "size" to size), auth)
+    ): String? {
+        return id?.let { buildUrl("getCoverArt", mapOf("id" to it, "size" to size), auth).toString() }
     }
 
     fun downloadUrl(id: String): Url = buildUrl("download", mapOf("id" to id))
