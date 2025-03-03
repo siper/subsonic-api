@@ -10,6 +10,7 @@ import io.ktor.client.request.parameter
 import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import io.ktor.http.appendPathSegments
+import io.ktor.http.buildUrl
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.stersh.subsonic.api.model.AlbumList2Response
@@ -205,7 +206,9 @@ class SubsonicApi(
     ): SubsonicResponse<EmptyResponse> {
         return client
             .get("rest/savePlayQueue") {
-                parameter("id", id)
+                id.forEach {
+                    parameter("id", it)
+                }
                 parameter("current", current)
                 parameter("position", position)
             }
@@ -219,9 +222,15 @@ class SubsonicApi(
     ): SubsonicResponse<EmptyResponse> {
         return client
             .get("rest/star") {
-                parameter("id", id)
-                parameter("albumId", albumId)
-                parameter("artistId", artistId)
+                id?.let {
+                    parameter("id", it)
+                }
+                albumId?.let {
+                    parameter("albumId", it)
+                }
+                artistId?.let {
+                    parameter("artistId", it)
+                }
             }
             .body<SubsonicResponse<EmptyResponse>>()
     }
@@ -233,9 +242,15 @@ class SubsonicApi(
     ): SubsonicResponse<EmptyResponse> {
         return client
             .get("rest/unstar") {
-                parameter("id", id)
-                parameter("albumId", albumId)
-                parameter("artistId", artistId)
+                id?.let {
+                    parameter("id", it)
+                }
+                albumId?.let {
+                    parameter("albumId", it)
+                }
+                artistId?.let {
+                    parameter("artistId", it)
+                }
             }
             .body<SubsonicResponse<EmptyResponse>>()
     }
