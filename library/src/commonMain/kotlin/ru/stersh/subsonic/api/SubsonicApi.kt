@@ -222,13 +222,13 @@ class SubsonicApi(
     ): SubsonicResponse<EmptyResponse> {
         return client
             .get("rest/star") {
-                id?.let {
+                id?.forEach {
                     parameter("id", it)
                 }
-                albumId?.let {
+                albumId?.forEach {
                     parameter("albumId", it)
                 }
-                artistId?.let {
+                artistId?.forEach {
                     parameter("artistId", it)
                 }
             }
@@ -242,13 +242,13 @@ class SubsonicApi(
     ): SubsonicResponse<EmptyResponse> {
         return client
             .get("rest/unstar") {
-                id?.let {
+                id?.forEach {
                     parameter("id", it)
                 }
-                albumId?.let {
+                albumId?.forEach {
                     parameter("albumId", it)
                 }
-                artistId?.let {
+                artistId?.forEach {
                     parameter("artistId", it)
                 }
             }
