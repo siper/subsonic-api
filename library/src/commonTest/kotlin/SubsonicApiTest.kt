@@ -1,10 +1,4 @@
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.respond
-import io.ktor.http.HttpHeaders
-import io.ktor.http.headersOf
 import kotlinx.coroutines.runBlocking
-import ping.PingResponse
 import ru.stersh.subsonic.api.SubsonicApi
 import kotlin.test.Test
 
@@ -17,6 +11,13 @@ class SubsonicApiTest {
         clientId = "SubsonicKotlinApi",
         useLegacyAuth = false
     )
+
+    @Test
+    fun `Test random songs response`() {
+        runBlocking {
+            println(api.getRandomSongs(1))
+        }
+    }
 
     @Test
     fun `Test artist response`() {
@@ -43,6 +44,13 @@ class SubsonicApiTest {
     fun `Test playlists response`() {
         runBlocking {
             println(api.getPlaylists())
+        }
+    }
+
+    @Test
+    fun `Test starred response`() {
+        runBlocking {
+            println(api.getStarred2())
         }
     }
 }

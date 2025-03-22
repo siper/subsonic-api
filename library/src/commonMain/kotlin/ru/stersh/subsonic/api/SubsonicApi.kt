@@ -10,7 +10,6 @@ import io.ktor.client.request.parameter
 import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import io.ktor.http.appendPathSegments
-import io.ktor.http.buildUrl
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.stersh.subsonic.api.model.AlbumList2Response
@@ -47,6 +46,7 @@ class SubsonicApi(
                 json = Json {
                     isLenient = true
                     explicitNulls = false
+                    prettyPrint = true
                     ignoreUnknownKeys = true
                 }
             )

@@ -45,7 +45,7 @@ data class PlaylistEntry(
     val duration: Int?,
     val genre: String?,
     val id: String,
-    val isDir: Boolean,
+    val isDir: Boolean?,
     val isVideo: Boolean?,
     val parent: String?,
     val path: String?,
