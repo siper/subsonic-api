@@ -19,7 +19,7 @@ data class PlaylistsResponse(
 
 @Serializable
 data class Playlist(
-    val changed: String,
+    val changed: String?,
     val coverArt: String?,
     val created: String,
     val duration: Int,
