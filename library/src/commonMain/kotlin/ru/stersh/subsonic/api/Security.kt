@@ -8,11 +8,14 @@ internal object Security {
     private val md5 = MD5()
     private val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
 
+    private const val SALT_LENGTH = 6
+
     fun generateSalt(): String {
-        val length = Random.nextInt(10, 17)
-        return (1..length)
-            .map { allowedChars.random() }
-            .joinToString("")
+        return buildString {
+            repeat(SALT_LENGTH) {
+                append(allowedChars.random())
+            }
+        }
     }
 
     fun getToken(salt: String, password: String): String {

@@ -36,7 +36,7 @@ class SubsonicApiTest {
     @Test
     fun `Test playlist response`() {
         runBlocking {
-            println(api.getPlaylist("1"))
+            println(api.getPlaylist("2306"))
         }
     }
 
