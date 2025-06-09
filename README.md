@@ -19,7 +19,7 @@ This is a Kotlin Multiplatform library that provides a convenient and idiomatic 
 
 Add the following dependency to your module's `build.gradle.kts` file:
 ```
-dependencies { implementation("ru.stersh:subsonic-api:1.0.7")  }
+dependencies { implementation("ru.stersh:subsonic-api:1.1.0")  }
 ```
 
 ## Platforms
@@ -35,9 +35,9 @@ This library supports the following platforms:
 
 This library relies on the following key dependencies:
 
-*   [Ktor Client](https://ktor.io/docs/client.html)
+*   [Ktor Client](https://github.com/ktorio/ktor)
 *   [Kotlinx Serialization](https://github.com/Kotlin/kotlinx.serialization)
-* [kotlin crypto](https://github.com/Kotlin/kotlinx-krypto)
+*   [hash](https://github.com/KotlinCrypto/hash)
 
 ## Contributing
 
