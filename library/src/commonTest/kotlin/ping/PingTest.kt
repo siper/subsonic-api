@@ -23,7 +23,6 @@ class PingTest {
                 password = "guest",
                 apiVersion = Api.VERSION,
                 clientId = "SubsonicKotlinApi",
-                useLegacyAuth = false,
                 baseClient = HttpClient(
                     MockEngine {
                         respond(PingResponse.SUCCESS, headers = headersOf(HttpHeaders.ContentType, "application/json"))
@@ -45,7 +44,6 @@ class PingTest {
                 password = "guest",
                 apiVersion = Api.VERSION,
                 clientId = "SubsonicKotlinApi",
-                useLegacyAuth = false,
                 baseClient = HttpClient(
                     MockEngine { httpRequestData ->
                         respond(PingResponse.ERROR, headers = headersOf(HttpHeaders.ContentType, "application/json"))

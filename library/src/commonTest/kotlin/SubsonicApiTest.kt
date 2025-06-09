@@ -1,4 +1,5 @@
 import kotlinx.coroutines.runBlocking
+import ru.stersh.subsonic.api.AuthType
 import ru.stersh.subsonic.api.SubsonicApi
 import kotlin.test.Test
 
@@ -9,7 +10,7 @@ class SubsonicApiTest {
         password = "guest",
         apiVersion = Api.VERSION,
         clientId = "SubsonicKotlinApi",
-        useLegacyAuth = false
+        authType = AuthType.Token()
     )
 
     @Test

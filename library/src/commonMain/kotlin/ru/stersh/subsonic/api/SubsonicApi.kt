@@ -37,9 +37,10 @@ class SubsonicApi(
     val password: String,
     val apiVersion: String,
     val clientId: String,
-    val useLegacyAuth: Boolean,
+    val authType: AuthType = AuthType.Token(),
     baseClient: HttpClient = HttpClient()
 ) {
+    @OptIn(ExperimentalStdlibApi::class)
     private val client = baseClient.config {
         install(ContentNegotiation) {
             json(
@@ -54,18 +55,8 @@ class SubsonicApi(
         install(DefaultRequest) {
             url(baseUrl)
             url {
-                parameters.append("u", username)
-                parameters.append("v", apiVersion)
-                parameters.append("c", clientId)
-                parameters.append("f", "json")
-                if (useLegacyAuth) {
-                    parameters.append("p", this@SubsonicApi.password)
-                } else {
-                    val salt = Security.generateSalt()
-                    val token = Security.getToken(salt, this@SubsonicApi.password)
-                    parameters.append("s", salt)
-                    parameters.append("t", token)
-                }
+                appendClientParameters()
+                appendAuth(authType)
             }
         }
         HttpResponseValidator {
@@ -316,7 +307,13 @@ class SubsonicApi(
         size: Int? = null,
         auth: Boolean = false
     ): String? {
-        return id?.let { buildUrl("getCoverArt", mapOf("id" to it, "size" to size), auth).toString() }
+        return id?.let {
+            buildUrl(
+                "getCoverArt",
+                mapOf("id" to it, "size" to size),
+                auth
+            ).toString()
+        }
     }
 
     fun downloadUrl(id: String): String = buildUrl("download", mapOf("id" to id)).toString()
@@ -328,25 +325,6 @@ class SubsonicApi(
         auth: Boolean = false
     ): String = buildUrl("getAvatar", mapOf("username" to username), auth).toString()
 
-    fun getClientParams(): Map<String, String> {
-        val authMap = if (useLegacyAuth) {
-            mapOf("p" to this@SubsonicApi.password)
-        } else {
-            val salt = Security.generateSalt()
-            val token = Security.getToken(salt, this@SubsonicApi.password)
-            mapOf(
-                "s" to salt,
-                "t" to token
-            )
-        }
-        return mapOf(
-            "u" to username,
-            "c" to clientId,
-            "v" to apiVersion,
-            "f" to "json"
-        ) + authMap
-    }
-
     private fun buildUrl(
         path: String,
         queryMap: Map<String, Any?>,
@@ -355,6 +333,8 @@ class SubsonicApi(
         val uriBuilder = URLBuilder(baseUrl)
             .appendPathSegments("rest", path)
 
+        uriBuilder.appendClientParameters()
+
         queryMap.forEach { entry ->
             if (entry.value != null) {
                 uriBuilder.parameters.append(entry.key, entry.value.toString())
@@ -362,16 +342,36 @@ class SubsonicApi(
         }
 
         if (auth) {
-            uriBuilder.appendAuth()
+            uriBuilder.appendAuth(authType)
         }
 
         return uriBuilder
             .build()
     }
 
-    private fun URLBuilder.appendAuth() {
-        getClientParams().forEach {
-            parameters.append(it.key, it.value)
+    private fun URLBuilder.appendClientParameters() {
+        parameters.append("c", clientId)
+        parameters.append("v", apiVersion)
+        parameters.append("f", "json")
+    }
+
+    private fun URLBuilder.appendAuth(authType: AuthType) {
+        parameters.append("u", this@SubsonicApi.username)
+        val userPassword = this@SubsonicApi.password
+        when (authType) {
+            AuthType.EncodedPassword -> {
+                parameters.append("p", encodePassword(userPassword))
+            }
+
+            is AuthType.Token -> {
+                val salt = generateSalt(authType.saltLength)
+                parameters.append("s", salt)
+                parameters.append("t", generateToken(salt, userPassword))
+            }
+
+            AuthType.Unsecure -> {
+                parameters.append("p", userPassword)
+            }
         }
     }
 }
