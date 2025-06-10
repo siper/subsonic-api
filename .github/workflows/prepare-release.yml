@@ -38,10 +38,6 @@ jobs:
             exit 1
           fi
 
-      - name: Create release branch
-        run: |
-          git checkout -b release-v${{ inputs.version }}
-
       - name: Update version in README
         run: |
           PATTERN='implementation("ru.stersh:subsonic-api:.*")'
