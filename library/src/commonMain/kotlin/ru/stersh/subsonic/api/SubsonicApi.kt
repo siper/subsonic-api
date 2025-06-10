@@ -349,13 +349,13 @@ class SubsonicApi(
             .build()
     }
 
-    private fun URLBuilder.appendClientParameters() {
+    fun URLBuilder.appendClientParameters() {
         parameters.append("c", clientId)
         parameters.append("v", apiVersion)
         parameters.append("f", "json")
     }
 
-    private fun URLBuilder.appendAuth(authType: AuthType) {
+    fun URLBuilder.appendAuth(authType: AuthType) {
         parameters.append("u", this@SubsonicApi.username)
         val userPassword = this@SubsonicApi.password
         when (authType) {
