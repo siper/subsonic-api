@@ -19,7 +19,7 @@ This is a Kotlin Multiplatform library that provides a convenient and idiomatic 
 
 Add the following dependency to your module's `build.gradle.kts` file:
 ```
-dependencies { implementation("ru.stersh:subsonic-api:1.1.0")  }
+dependencies { implementation("ru.stersh:subsonic-api:1.1.2")  }
 ```
 
 ## Platforms
