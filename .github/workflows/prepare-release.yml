@@ -47,7 +47,7 @@ jobs:
       - name: Update version in build.gradle.kts
         run: |
           cd library
-          sed -i "s/version = .*/version = "${{ inputs.version }}"/" build.gradle.kts
+          sed -i "s/version = .*/version = \"${{ inputs.version }}\"/" build.gradle.kts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
