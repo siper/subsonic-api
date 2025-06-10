@@ -59,6 +59,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: release ${{ inputs.version }}"
           branch: release-v${{ inputs.version }}
-          delete-branch: true
+          delete-branch: false
           title: "chore: release ${{ inputs.version }}"
           base: master
