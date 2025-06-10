@@ -22,7 +22,7 @@ jobs:
         with:
           ref: 'master'
           fetch-depth: 0
-          token: ${{ secrets.TOKEN_GITHUB }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Git
         run: |
@@ -56,7 +56,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.TOKEN_GITHUB }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: release ${{ inputs.version }}"
           branch: release-v${{ inputs.version }}
           delete-branch: true
