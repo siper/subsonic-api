@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -29,6 +30,7 @@ import ru.stersh.subsonic.api.model.SongResponse
 import ru.stersh.subsonic.api.model.Starred2Response
 import ru.stersh.subsonic.api.model.StarredResponse
 import ru.stersh.subsonic.api.model.SubsonicResponse
+import kotlin.time.Duration
 
 
 class SubsonicApi(
@@ -38,10 +40,16 @@ class SubsonicApi(
     val apiVersion: String,
     val clientId: String,
     val authType: AuthType = AuthType.Token(),
+    val connectTimeout: Duration? = null,
+    val readTimeout: Duration? = null,
     baseClient: HttpClient = HttpClient()
 ) {
     @OptIn(ExperimentalStdlibApi::class)
     private val client = baseClient.config {
+        install(HttpTimeout) {
+            connectTimeout?.let { connectTimeoutMillis = it.inWholeMilliseconds }
+            readTimeout?.let { socketTimeoutMillis = it.inWholeMilliseconds }
+        }
         install(ContentNegotiation) {
             json(
                 json = Json {
